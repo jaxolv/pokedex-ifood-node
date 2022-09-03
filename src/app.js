@@ -22,9 +22,9 @@ class App {
   async initializeDatabase() {
     try {
       await db.authenticate();
-      console.log("Conexão com o banco de dados deu bom")
+      console.log("Conexão com DB estabelecida.")
     } catch (error) {
-      console.log("Deu ruim: ", error.message)
+      console.log("Falha na conexão: ", error.message)
     }
   }
 }

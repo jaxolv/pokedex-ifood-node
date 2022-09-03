@@ -1,11 +1,9 @@
-import ListLegendariesService from "../../services/legendary/ListLegendariesService";
+import LegendaryModel from "../../models/legendary/LegendaryModel"
 
 export default class UpdateLegendaryService {
-  constructor() {
-    this.service = new ListLegendariesService();
-  }
+  constructor() {}
 
-  update(
+  async update(
     id,
     name,
     description,
@@ -17,28 +15,49 @@ export default class UpdateLegendaryService {
     experience,
     specialDefense
   ) {
-    const pokemons = this.service.listAll();
-    const pokemonIndice = pokemons.findIndex((item) => item.id === Number(id));
+    try {
+      const pokemon = await LegendaryModel.findByPk(id)
 
-    if (pokemonIndice === -1) {
-      return { erro: "Pokemon não encontrado" };
+      if (!pokemon) {
+        return { erro: "Pokémon não encontrado"}
+      }
+
+      const [numeroDeRegistrosAtualizados] = await LegendaryModel.update(
+        {
+          name,
+          description,
+          type,
+          healthPoints,
+          specialAttack,
+          defense,
+          attack,
+          experience,
+          specialDefense
+        },
+        {
+          where: { id }
+        }
+      )
+
+      if (numeroDeRegistrosAtualizados === 0) {
+        return { erro: "Dados iguais"}
+      } else {
+        return {
+          id,
+          name,
+          description,
+          type,
+          healthPoints,
+          specialAttack,
+          defense,
+          attack,
+          experience,
+          specialDefense
+        }
+      }
+    } catch (error) {
+      console.log(error)
+      return { error: error.message }
     }
-
-    pokemons[pokemonIndice] = {
-      name,
-      description,
-      type,
-      healthPoints,
-      specialAttack,
-      defense,
-      attack,
-      experience,
-      specialDefense,
-    };
-
-    return {
-      id,
-      ...pokemons[pokemonIndice],
-    };
   }
 }

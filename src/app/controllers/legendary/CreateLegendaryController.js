@@ -15,7 +15,7 @@ export default class CreateLegendaryController {
       defense,
       attack,
       experience,
-      specialDefense,
+      specialDefense
     } = request.body;
 
     const legendary = await this.service.create(

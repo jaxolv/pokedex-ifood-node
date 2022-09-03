@@ -1,20 +1,26 @@
-import ListLegendariesService from "../../services/legendary/ListLegendariesService";
+import LegendaryModel from "../../models/legendary/LegendaryModel"
 
 export default class DeleteLegendaryService {
-  constructor() {
-    this.service = new ListLegendariesService();
-  }
+  constructor() {}
 
-  delete(id) {
-    const pokemons = this.service.listAll();
-    const pokemonIndice = pokemons.findIndex((item) => item.id === Number(id));
+  async delete(id) {
+    try {
+      const pokemon = await LegendaryModel.findByPk(id);
 
-    if (pokemonIndice === -1) {
-      return { erro: "Pokémon não encontrado" };
+      if (!pokemon) {
+        return { mensagem: "Pokémon não encontrado"}
+      }
+      // DROP * FROM legendaries WHERE id = '2' (por exemplo);
+      const deletedPokemon = await pokemon.destroy();
+
+      return deletedPokemon
+
+      /* const deletedPokemon = await LegendaryModel.destroy({ where: { id }});
+      console.log(deletedPokemon) */
+
+    } catch (error) {
+      console.log(error)
+      return { error: error.message }
     }
-
-    pokemons.splice(pokemonIndice, 1);
-
-    return { mensagem: "Pokémon removido com sucesso" };
   }
 }

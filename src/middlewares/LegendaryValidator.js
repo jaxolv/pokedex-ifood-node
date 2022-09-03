@@ -15,7 +15,6 @@ export default async function legendaryValidator(request, response, next) {
     description: yup
       .string()
       .strict()
-      .required()
       .min(10)
       .typeError("Deve ser uma string"),
   });

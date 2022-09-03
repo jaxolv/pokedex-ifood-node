@@ -1,40 +1,39 @@
 import LegendaryModel from "../../models/legendary/LegendaryModel";
 
 export default class ListLegendariesService {
-  constructor() {}
+  constructor() { }
 
-  listAll() {
-    const pokemon = new LegendaryModel(
-      1,
-      "MewTwo",
-      "Descrição",
-      "pokemon",
-      "1000,00",
-      "1000,00",
-      "1000,00",
-      "1000,00",
-      "1000,00",
-      "1000,00"
-    );
-    const pokemon2 = new LegendaryModel(
-      2,
-      "Pikachu",
-      "Descrição",
-      "pokemon",
-      "1000,00",
-      "1000,00",
-      "1000,00",
-      "1000,00",
-      "1000,00",
-      "1000,00"
-    );
+  async listAll(pokemonName) {
+    try {
+      if (pokemonName) {
+        return await this.listOne(pokemonName);
+      }
 
-    return [pokemon, pokemon2];
+      const pokemons = await LegendaryModel.findAll();
+
+      return pokemons;
+
+    } catch (error) {
+      console.log(error)
+      return { error: error.message }
+    }
   }
 
-  listOne(pokemonName) {
-    const pokemonList = this.listAll();
-    const pokemon = pokemonList.find((item) => item.name === pokemonName);
-    return pokemon;
+  async listOne(pokemonName) {
+    try {
+      // SELECT * FROM legendaries WHERE name = Pikachu
+      const pokemon = await LegendaryModel.findAll({
+        where: { name: pokemonName }
+      })
+
+      if (!pokemon) {
+        return { mensagem: "Pokémon não encontrado"}
+      }
+
+      return pokemon
+    } catch (error) {
+      console.log(error)
+      return { error: error.message }
+    }
   }
 }

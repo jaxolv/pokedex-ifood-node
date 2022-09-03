@@ -5,13 +5,15 @@ export default class ListLegendaryByNameController {
     this.service = new ListLegendariesService();
   }
 
-  index(request, response) {
-    const legendaries = this.service.listAll();
+  async index(request, response) {
+    const { name } = request.query;
+
+    const legendaries = await this.service.listAll(name);
+
     response.json(legendaries);
   }
 
-  show(request, response) {
-    const { name } = request.query;
+  /* async show(request, response) {
 
     if (!name) {
       return response
@@ -19,8 +21,8 @@ export default class ListLegendaryByNameController {
         .json({ erro: "Você não passou o nome do pokemon" });
     }
 
-    const legendary = this.service.listOne(name);
+    const legendary = await this.service.listOne(name);
 
     return response.json(legendary);
-  }
+  } */
 }

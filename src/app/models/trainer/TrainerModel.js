@@ -1,5 +1,7 @@
 import Sequelize, { Model } from "sequelize";
 import databaseConfig from "../../../config/database"
+import LegendariesTrainers from "../LegendariesTrainers/LegendariesTrainers";
+import LegendaryModel from "../legendary/LegendaryModel";
 
 const sequelize = new Sequelize(databaseConfig)
 
@@ -19,7 +21,13 @@ TrainerModel.init(
   },
   {
     sequelize,
+    modelName: "users",
+    timestamps: false
   }
 )
+
+LegendaryModel.belongsToMany(LegendaryModel, {
+  through: LegendariesTrainers
+});
 
 export default TrainerModel;

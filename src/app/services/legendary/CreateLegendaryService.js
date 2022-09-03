@@ -28,10 +28,11 @@ export default class CreateLegendaryService {
         experience,
         specialDefense
       })
-
+      
       return newLegendary;
 
     } catch(error) {
+      console.log(error)
       return { error: error.message }
     }
   }

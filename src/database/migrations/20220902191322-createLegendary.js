@@ -29,7 +29,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false
       },
-      defensa: {
+      defense: {
         type: Sequelize.INTEGER,
         allowNull: false
       },
